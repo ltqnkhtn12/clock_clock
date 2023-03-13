@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html {
+            background: #fff url('./images_Lab05/nenhoa4.jpeg');
+            background-size: cover;
+            font-family: "helvetica neue";
+            text-align: center;
+            font-size: 10px;
+        }
+        
+        body {
+            margin: 0;
+            font-size: 2rem;
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+            align-items: center;
+            position: relative;
+        }
+        
+        .clock {
+            border: 2px solid black;
+            background-color: rgb(255 255 255);
+            box-shadow: 0px 0px 16px rgb(0 0 0 / 50%);
+            visibility: hidden;
+            width: 360px;
+            height: 360px;
+            background: url('./images_Lab05/clock-02.jpeg');
+            background-size: 100%;
+            border-radius: 50%;
+            top: 10%;
+            right: 33%;
+            position: absolute;
+            padding: 2rem;
+        }
+        
+        .clock-face {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hand {
+            width: 190px;
+            height: 20px;
+            background-repeat: no-repeat;
+            background-size: 150px 5px;
+            background-position: right center;
+            transform-origin: 150px 10px;
+            position: absolute;
+            top: calc(50% - 10px);
+            right: calc( 50% - 40px);
+            transform: rotate(90deg);
+        }
+        
+        .hour-hand {
+            background-image: url(./images_Lab05/hour.png);
+        }
+        
+        .min-hand {
+            background-image: url(./images_Lab05//min.png);
+        }
+        
+        .second-hand {
+            background-image: url(./images_Lab05/sec.png);
+        }
+        
+        #digital-clock {
+            width: 50%;
+            margin: auto;
+            font-size: 25px;
+            text-align: center;
+            padding-top: 260px;
+            padding-left: 15px;
+            color: rgb(156, 13, 85);
+            font-weight: bolder;
+            font-family: 'Rubik Gemstones', cursive;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="clock">
+        <div class="clock-face">
+            <div class="hand hour-hand"></div>
+            <div class="hand min-hand"></div>
+            <div class="hand second-hand"></div>
+            <div id="digital-clock"></div>
+        </div>
+    </div>
+    <script>
+        const secondHand = document.querySelector(".second-hand");
+        const minsHand = document.querySelector(".min-hand");
+        const hourHand = document.querySelector(".hour-hand");
+        const clockContainer = document.querySelector(".clock");
+
+        function analogClock() {
+            const now = new Date();
+            const miliseconds = now.getMilliseconds();
+            const seconds = now.getSeconds();
+            const secondsDegrees = (seconds + (miliseconds / 1000)) / 60 * 360 + 90;
+            secondHand.style.transform = ` rotate(${secondsDegrees}deg)`;
+            const mins = now.getMinutes();
+            const minsDegrees = mins / 60 * 360 + seconds / 60 * 6 + 90;
+            minsHand.style.transform = ` rotate(${minsDegrees}deg)`;
+            const hour = now.getHours();
+            const hourDegrees = hour / 12 * 360 + mins / 60 * 30 + 90;
+            hourHand.style.transform = ` rotate(${hourDegrees}deg)`;
+        }
+        const delay = 1000;
+
+        function initialAnalogClock() {
+            clockContainer.style.visibility = 'visible';
+            analogClock();
+            setInterval(analogClock, delay);
+        }
+        initialAnalogClock();
+
+        function Time() {
+            var date = new Date();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            var period = "";
+            if (hour >= 12) {
+                period = "PM";
+            } else {
+                period = "AM";
+            }
+
+            if (hour == 0) {
+                hour = 12;
+            } else {
+                if (hour > 12) {
+                    hour = hour - 12;
+                }
+            }
+
+            hour = update(hour);
+            minute = update(minute);
+            second = update(second);
+
+            document.getElementById("digital-clock").innerText = hour + ":" + minute + ":" + second + ":" + " " + period;
+
+            setTimeout(Time, 1000);
+        }
+
+        function update(t) {
+            if (t < 10) {
+                return "0" + t;
+            } else {
+                return t;
+            }
+        }
+        Time();
+    </script>
+</body>
+
+</html>
